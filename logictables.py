@@ -104,7 +104,7 @@ class Gate:
 
         if self.inputs[0] == False:
             return "F"
-        if self.inputs[0] == True:
+        elif self.inputs[0] == True:
             return "T"
         else:
             return "?"
@@ -384,7 +384,7 @@ class SWITCH(Gate):
 
         if self.direction == False:
             return "L"
-        if self.direction == True:
+        elif self.direction == True:
             return "R"
         else:
             return "?"
