@@ -45,31 +45,36 @@ generate_table() method.
 The following logic gates are included:
 
     Inputs (0 Inputs, 1 Output):
-        IN -- Simply outputs a signal. Includes a toggle() method which sets
-            its signal as True or False. Can be used as a truth table input.
-        TRUE -- Like IN, but outputs a constant True signal.
+        InGate -- Simply outputs a signal. Includes a toggle() method which
+            sets its signal as True or False. Can be used as a truth table
+            input.
+        TrueGate -- Like InGate, but outputs a constant True signal.
+        FalseGate -- Like InGate, but outputs a constant False signal.
 
     Outputs (1 Input, 0 Outputs):
-        OUT -- Simply stores its input signal. Meant for use in defining the
-            truth table outputs.
+        OutGate -- Simply stores its input signal. Meant for use in defining
+            the truth table outputs.
 
     Unary Gates (1 Input, 1 Output):
-        DIODE -- Outputs a copy of its own input signal.
-        NOT -- Outputs negation of input signal.
+        DiodeGate -- Outputs a copy of its own input signal.
+        NotGate -- Outputs negation of input signal.
 
     Binary Gates (2 Inputs, 1 Output):
-        AND -- Outputs True if both inputs are True, and False otherwise.
-        NAND -- Outputs True if both inputs are False, and False otherwise.
-        OR -- Outputs True if at least one input is True, and False otherwise.
-        NOR -- Outputs True if at least one input is False, and False
+        AndGate -- Outputs True if both inputs are True, and False otherwise.
+        NandGate -- Outputs True if both inputs are False, and False otherwise.
+        OrGate -- Outputs True if at least one input is True, and False
             otherwise.
-        XOR -- Outputs True if exactly one input is True, and False otherwise.
-        XNOR -- Outputs True if both inputs are the same, and False otherwise.
+        NorGate -- Outputs True if at least one input is False, and False
+            otherwise.
+        XorGate -- Outputs True if exactly one input is True, and False
+            otherwise.
+        XnorGate -- Outputs True if both inputs are the same, and False
+            otherwise.
 
     Splitters (1 Input, 2 Outputs):
-        SPLIT -- Outputs a copy of its own input signal to both outputs.
-        SWITCH -- Outputs a copy of its own input signal to one output gate,
-            outputting False to the other gate. Includes a toggle() method
-            which selects which gate is selected. False indicates gate 0
+        SplitGate -- Outputs a copy of its own input signal to both outputs.
+        SwitchGate -- Outputs a copy of its own input signal to one output
+            gate, outputting False to the other gate. Includes a toggle()
+            method which selects which gate is selected. False indicates gate 0
             ('left') while True indicates gate 1 ('right'). Can be used as a
             truth table input.

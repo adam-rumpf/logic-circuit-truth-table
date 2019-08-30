@@ -18,7 +18,7 @@ connect the SPLIT gate to port 1 of Xor1 and port 0 of Xor2. Note that even
 gates with a single output must be given their output gates in list form.
 
 Most gates also include a process() method which causes it to evaluate its
-boolean inputs and calculate the appropriate boolean outputs, and a send_out()
+boolean inputs and calculate the appropriate boolean outputs, and a _send_out()
 method which sends its outputs to all output gates and prompts them to also
 evaluate their process() methods. This may lead to infinite loops if there are
 cycles in the logic circuit.
@@ -61,7 +61,7 @@ def number_to_boolean(num, bound):
 ###############################################################################
 
 #==============================================================================
-class Gate:
+class _Gate:
     """Generic gate template for use as a parent class."""
 
     #--------------------------------------------------------------------------
@@ -91,7 +91,7 @@ class Gate:
         pass
 
     #--------------------------------------------------------------------------
-    def send_out(self):
+    def _send_out(self):
         """Sends internal state to output gate and prompts it to process."""
 
         for i in range(len(self.outputs)):
@@ -110,7 +110,7 @@ class Gate:
             return "?"
 
 #==============================================================================
-class OUT(Gate):
+class OutGate(_Gate):
     """OUTput which simply stores its input value."""
 
     #--------------------------------------------------------------------------
@@ -128,26 +128,26 @@ class OUT(Gate):
         self.outputs[0] = self.inputs[0]
 
     #--------------------------------------------------------------------------
-    def send_out(self):
+    def _send_out(self):
         """Placeholder output sender to overwrite standard gate."""
 
         pass
 
 #==============================================================================
-class IN(Gate):
+class InGate(_Gate):
     """INput which simply outputs its input value."""
 
     #--------------------------------------------------------------------------
     def __init__(self, out_gates, out_ports=[0], name="<gate>"):
         """Constructor sets number of ports."""
 
-        Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
+        _Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
 
     #--------------------------------------------------------------------------
     def process(self):
         """IN simply sends its own state to its output gate."""
 
-        self.send_out()
+        self._send_out()
 
     #--------------------------------------------------------------------------
     def toggle(self, state):
@@ -155,17 +155,17 @@ class IN(Gate):
 
         self.inputs[0] = state
         self.outputs[0] = state
-        self.send_out()
+        self._send_out()
 
 #==============================================================================
-class TRUE(Gate):
+class TrueGate(_Gate):
     """Outputs a constant True signal."""
 
     #--------------------------------------------------------------------------
     def __init__(self, out_gates, out_ports=[0], name="<gate>"):
         """Constructor sets number of ports and sets input/output to True."""
 
-        Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
+        _Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
 
         self.inputs[0] = True
         self.outputs[0] = True
@@ -174,17 +174,17 @@ class TRUE(Gate):
     def process(self):
         """IN simply sends its own state to its output gate."""
 
-        self.send_out()
+        self._send_out()
 
 #==============================================================================
-class FALSE(Gate):
+class FalseGate(_Gate):
     """Outputs a constant False signal."""
 
     #--------------------------------------------------------------------------
     def __init__(self, out_gates, out_ports=[0], name="<gate>"):
         """Constructor sets number of ports and sets input/output to True."""
 
-        Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
+        _Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
 
         self.inputs[0] = False
         self.outputs[0] = False
@@ -193,51 +193,51 @@ class FALSE(Gate):
     def process(self):
         """IN simply sends its own state to its output gate."""
 
-        self.send_out()
+        self._send_out()
 
 #==============================================================================
-class AND(Gate):
+class AndGate(_Gate):
     """AND gate. Outputs True if both inputs are True."""
 
     #--------------------------------------------------------------------------
     def __init__(self, out_gates, out_ports=[0], name="<gate>"):
         """Constructor sets number of ports."""
 
-        Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
+        _Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
 
     #--------------------------------------------------------------------------
     def process(self):
         """Evaluates own boolean inputs and sends result to output gate."""
 
         self.outputs[0] = self.inputs[0] and self.inputs[1]
-        self.send_out()
+        self._send_out()
 
 #==============================================================================
-class OR(Gate):
+class OrGate(_Gate):
     """OR gate. Outputs True if at least one input is True."""
 
     #--------------------------------------------------------------------------
     def __init__(self, out_gates, out_ports=[0], name="<gate>"):
         """Constructor sets number of ports."""
 
-        Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
+        _Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
 
     #--------------------------------------------------------------------------
     def process(self):
         """Evaluates own boolean inputs and sends result to output gate."""
 
         self.outputs[0] = self.inputs[0] or self.inputs[1]
-        self.send_out()
+        self._send_out()
 
 #==============================================================================
-class XOR(Gate):
+class XorGate(_Gate):
     """XOR gate. Outputs True if exactly one input is True."""
 
     #--------------------------------------------------------------------------
     def __init__(self, out_gates, out_ports=[0], name="<gate>"):
         """Constructor sets number of ports."""
 
-        Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
+        _Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
 
     #--------------------------------------------------------------------------
     def process(self):
@@ -245,51 +245,51 @@ class XOR(Gate):
 
         self.outputs[0] = ((self.inputs[0] or self.inputs[1]) and not
                     (self.inputs[0] and self.inputs[1]))
-        self.send_out()
+        self._send_out()
 
 #==============================================================================
-class NAND(Gate):
+class NandGate(_Gate):
     """NAND gate. Outputs True if both inputs are False."""
 
     #--------------------------------------------------------------------------
     def __init__(self, out_gates, out_ports=[0], name="<gate>"):
         """Constructor sets number of ports."""
 
-        Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
+        _Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
 
     #--------------------------------------------------------------------------
     def process(self):
         """Evaluates own boolean inputs and sends result to output gate."""
 
         self.outputs[0] = not (self.inputs[0] and self.inputs[1])
-        self.send_out()
+        self._send_out()
 
 #==============================================================================
-class NOR(Gate):
+class NorGate(_Gate):
     """NOR gate. Outputs True if at least one input is False."""
 
     #--------------------------------------------------------------------------
     def __init__(self, out_gates, out_ports=[0], name="<gate>"):
         """Constructor sets number of ports."""
 
-        Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
+        _Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
 
     #--------------------------------------------------------------------------
     def process(self):
         """Evaluates own boolean inputs and sends result to output gate."""
 
         self.outputs[0] = not (self.inputs[0] or self.inputs[1])
-        self.send_out()
+        self._send_out()
 
 #==============================================================================
-class XNOR(Gate):
+class XnorGate(_Gate):
     """XNOR gate. Outputs True if both inputs are the same."""
 
     #--------------------------------------------------------------------------
     def __init__(self, out_gates, out_ports=[0], name="<gate>"):
         """Constructor sets number of ports."""
 
-        Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
+        _Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
 
     #--------------------------------------------------------------------------
     def process(self):
@@ -297,51 +297,51 @@ class XNOR(Gate):
 
         self.outputs[0] = not (((self.inputs[0] or self.inputs[1]) and not
                     (self.inputs[0] and self.inputs[1])))
-        self.send_out()
+        self._send_out()
 
 #==============================================================================
-class NOT(Gate):
+class NotGate(_Gate):
     """NOT Gate. Negates input signal."""
 
     #--------------------------------------------------------------------------
     def __init__(self, out_gates, out_ports=[0], name="<gate>"):
         """Constructor sets number of ports."""
 
-        Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
+        _Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
 
     #--------------------------------------------------------------------------
     def process(self):
         """Evaluates own boolean inputs and sends result to output gate."""
 
         self.outputs[0] = not self.inputs[0]
-        self.send_out()
+        self._send_out()
 
 #==============================================================================
-class DIODE(Gate):
+class DiodeGate(_Gate):
     """Diode. Simply carries signal unchanged, but only in one direction."""
 
     #--------------------------------------------------------------------------
     def __init__(self, out_gates, out_ports=[0], name="<gate>"):
         """Constructor sets number of ports."""
 
-        Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
+        _Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
 
     #--------------------------------------------------------------------------
     def process(self):
         """Evaluates own boolean inputs and sends result to output gate."""
 
         self.outputs[0] = self.inputs[0]
-        self.send_out()
+        self._send_out()
 
 #==============================================================================
-class SPLIT(Gate):
+class SplitGate(_Gate):
     """Splits a signal into two outputs."""
 
     #--------------------------------------------------------------------------
     def __init__(self, out_gates, out_ports=[0, 0], name="<gate>"):
         """Constructor sets number of ports."""
 
-        Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
+        _Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
 
     #--------------------------------------------------------------------------
     def process(self):
@@ -349,17 +349,17 @@ class SPLIT(Gate):
 
         self.outputs[0] = self.inputs[0]
         self.outputs[1] = self.inputs[0]
-        self.send_out()
+        self._send_out()
 
 #==============================================================================
-class SWITCH(Gate):
+class SwitchGate(_Gate):
     """Splitter that toggles between which output gate to trigger."""
 
     #--------------------------------------------------------------------------
     def __init__(self, out_gates, out_ports=[0, 0], name="<gate>"):
         """Constructor sets number of ports and initializes direction."""
 
-        Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
+        _Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
 
         self.direction = False # False for first output, True for second output
 
@@ -369,7 +369,7 @@ class SWITCH(Gate):
 
         self.outputs[int(self.direction)] = self.inputs[0] # selected gate
         self.outputs[(int(self.direction)+1)%2] = False # non-selected gate
-        self.send_out()
+        self._send_out()
 
     #--------------------------------------------------------------------------
     def toggle(self, state):
@@ -415,7 +415,7 @@ class TruthTable:
         self.outputs = outputs # list of output gates
 
     #--------------------------------------------------------------------------
-    def get_outputs(self, input_values):
+    def _get_outputs(self, input_values):
         """Returns all outputs for a given list of input values."""
 
         # Update each input and prompt all constant inputs to re-send signals
@@ -444,7 +444,7 @@ class TruthTable:
             input_set = number_to_boolean(i, 2**len(self.inputs))
 
             # Generate outputs from inputs
-            output_set = self.get_outputs(input_set)
+            output_set = self._get_outputs(input_set)
 
             # Print values
             row = ""
@@ -462,22 +462,22 @@ class TruthTable:
 if __name__ == "__main__":
 
     # Define a system of logic gates
-    TestOut = OUT(name="OUT")
-    TestAnd0 = AND([TestOut])
-    TestAnd10 = AND([TestAnd0], out_ports=[0])
-    TestAnd11 = AND([TestAnd0], out_ports=[1])
-    TestSplit = SPLIT([TestAnd10, TestAnd11], out_ports=[1, 0])
-    TestXor20 = XOR([TestAnd10], out_ports=[0])
-    TestXor21 = XOR([TestSplit])
-    TestAnd22 = AND([TestAnd11], out_ports=[1])
-    TestSwitch0 = SWITCH([TestXor20, TestXor21], out_ports=[1, 0],
-                         name="Switch1")
-    TestSwitch1 = SWITCH([TestXor21, TestAnd22], out_ports=[1, 0],
-                         name="Switch2")
-    TestIn0 = IN([TestXor20], out_ports=[0], name="IN2")
-    TestIn1 = IN([TestSwitch0], name="IN3")
-    TestIn2 = IN([TestSwitch1], name="IN4")
-    TestIn3 = IN([TestAnd22], out_ports=[1], name="IN5")
+    TestOut = OutGate(name="OUT")
+    TestAnd0 = AndGate([TestOut])
+    TestAnd10 = AndGate([TestAnd0], out_ports=[0])
+    TestAnd11 = AndGate([TestAnd0], out_ports=[1])
+    TestSplit = SplitGate([TestAnd10, TestAnd11], out_ports=[1, 0])
+    TestXor20 = XorGate([TestAnd10], out_ports=[0])
+    TestXor21 = XorGate([TestSplit])
+    TestAnd22 = AndGate([TestAnd11], out_ports=[1])
+    TestSwitch0 = SwitchGate([TestXor20, TestXor21], out_ports=[1, 0],
+                             name="Switch1")
+    TestSwitch1 = SwitchGate([TestXor21, TestAnd22], out_ports=[1, 0],
+                             name="Switch2")
+    TestIn0 = InGate([TestXor20], out_ports=[0], name="IN1")
+    TestIn1 = InGate([TestSwitch0], name="IN2")
+    TestIn2 = InGate([TestSwitch1], name="IN3")
+    TestIn3 = InGate([TestAnd22], out_ports=[1], name="IN4")
 
     # Define a truth table object
     TestTable = TruthTable(inputs=[TestIn0, TestIn1, TestIn2, TestIn3,
