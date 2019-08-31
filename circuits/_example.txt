@@ -2,6 +2,6 @@
 
 # Name / Type / OutGates / OutPorts
 Out1	OUT
-And1	AND	0	0
-In1	IN	1	0
-In2	IN	1	1
+And1	AND	Out1	0
+In1	IN	And1	0
+In2	IN	And1	1
