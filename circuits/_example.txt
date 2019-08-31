@@ -1,6 +1,6 @@
 # A simple circuit consist of only an AND gate with 2 inputs and 1 output.
 
-# Name / Type / OutGates / OutPorts
+# Name / Type / OutGates[] / OutPorts[]
 Out1	OUT
 And1	AND	Out1	0
 In1	IN	And1	0
