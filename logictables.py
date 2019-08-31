@@ -13,7 +13,7 @@ indices corresponding to the output gates. The keyword 'name' argument accepts
 a name for the gate to use in truth tables.
 
 For example, if we already have two XOR gate objects called Xor1 and Xor2, then
-instantiating a SPLIT gate with SPLIT([Xor1, Xor2], out_ports=[1, 0]) would
+instantiating a SPLIT gate with SplitGate([Xor1, Xor2], out_ports=[1, 0]) would
 connect the SPLIT gate to port 1 of Xor1 and port 0 of Xor2. Note that even
 gates with a single output must be given their output gates in list form.
 
@@ -35,6 +35,13 @@ The TruthTable class can store sets of variable inputs, constant inputs, and
 outputs, and cycle through every possible setting of the variable inputs to
 generate a complete truth table of the resulting outputs via the
 generate_table() method.
+
+The circuit_load() function can be used to load a circuit defined in an
+external text file in the /circuits/ folder. The format for a circuit file is
+described in the included _template file. As the input file is read, gate
+objects are created and linked to each other, and then used to instantiate a
+TruthTable object. The function returns a dictionary of the created gate
+objects as well as the created TruthTable object.
 """
 
 import math
@@ -460,18 +467,24 @@ class TruthTable:
 
 #==============================================================================
 def circuit_load(file_name):
-    """Loads a circuit file from the /circuits folder into a TruthTable.
+    """Loads a circuit file from the /circuits/ folder into a TruthTable.
 
-    Requires the name of a circuit file, and outputs a pointer to the created
+    Requires the name of a circuit file. Outputs (as a tuple) a dictionary of
+    the created gate objects (indexed by name) and pointer to the generated
     TruthTable object.
 
-    The specified file name is assumed to be in the /circuits folder. See the
+    The specified file name is assumed to be in the /circuits/ folder. See the
     included file '_template.txt' for an explanation of the file format, and
     '_example.txt' for an example circuit file.
     """
 
     # Initialize dictionary associating gate names with gate objects
     gates = {}
+
+    # Initialize TruthTable lists
+    inputs = []
+    constants = []
+    outputs = []
 
     # Open file and read line-by-line
     with open("circuits/"+file_name, 'r') as f:
@@ -488,10 +501,23 @@ def circuit_load(file_name):
             # Break into cases depending on the specified gate type
             if gate_type == "OUT":
                 gates[gate_name] = OutGate(name=gate_name)
+                outputs.append(gates[gate_name])
+            elif gate_type == "IN":
+                out = [gates[line_split[2]]]
+                port = [int(line_split[3])]
+                gates[gate_name] = InGate(out, out_ports=port, name=gate_name)
+                inputs.append(gates[gate_name])
+            elif gate_type == "AND":
+                out = [gates[line_split[2]]]
+                port = [int(line_split[3])]
+                gates[gate_name] = AndGate(out, out_ports=port, name=gate_name)
             else:
                 print("Unknown gate type '"+gate_type+"' read.")
 
-    return None
+    # Create TruthTable object
+    table = TruthTable(inputs=inputs, constants=constants, outputs=outputs)
+
+    return gates, table
 
 ###############################################################################
 # Execution
