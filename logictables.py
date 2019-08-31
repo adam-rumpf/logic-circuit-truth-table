@@ -455,6 +455,45 @@ class TruthTable:
             print(row)
 
 ###############################################################################
+# Circuit File Reading Function
+###############################################################################
+
+#==============================================================================
+def circuit_load(file_name):
+    """Loads a circuit file from the /circuits folder into a TruthTable.
+
+    Requires the name of a circuit file, and outputs a pointer to the created
+    TruthTable object.
+
+    The specified file name is assumed to be in the /circuits folder. See the
+    included file '_template.txt' for an explanation of the file format, and
+    '_example.txt' for an example circuit file.
+    """
+
+    # Initialize dictionary associating gate names with gate objects
+    gates = {}
+
+    # Open file and read line-by-line
+    with open("circuits/"+file_name, 'r') as f:
+        for line in f:
+            if (line[0] == "#") or (len(line) <= 1):
+                # Skip comment or blank lines
+                continue
+
+            # Get gate name and type
+            line_split = line.split()
+            gate_name = line_split[0]
+            gate_type = line_split[1].upper()
+
+            # Break into cases depending on the specified gate type
+            if gate_type == "OUT":
+                gates[gate_name] = OutGate(name=gate_name)
+            else:
+                print("Unknown gate type '"+gate_type+"' read.")
+
+    return None
+
+###############################################################################
 # Execution
 ###############################################################################
 
