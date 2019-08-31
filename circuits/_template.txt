@@ -1,0 +1,40 @@
+###############################################################################
+#
+# A logic circuit can be defined as a tab-separated table in a text file. Each
+# row corresponds to a gate in the circuit. The main module's circuit_load()
+# method will attempt to create a TruthTable object with the specified gates,
+# in the order of their listing in the circuit file. Since gates always require
+# their output gates to already be defined, the gates must be listed in reverse
+# topological order, beginning with the outputs and working backwards to the
+# inputs. That is, nothing should be listed as an OutGate unless it has
+# already been defined in a previous row as an ID.
+#
+# The column order is:
+#   Name -- Name string for the gate. Must be unique for each gate, and must
+#       not contain any whitespace characters.
+#   Type -- String name of gate type. Case insensitive. Must be chosen from
+#       the following list:
+#       OUT
+#       IN
+#       TRUE
+#       FALSE
+#       AND
+#       OR
+#       XOR
+#       NAND
+#       NOR
+#       XNOR
+#       NOT
+#       DIODE
+#       SPLIT
+#       SWITCH
+#   OutGates -- Tab-separated list of output gate names. The length of the list
+#       must be appropriate for the given type of gate.
+#   OutPorts -- Tab-separated list of output port IDs. The length of the list
+#       must be appropriate for the given type of gate.
+#
+# Comment lines may be included if preceded by a '#' symbol.
+#
+###############################################################################
+
+# Name / Type / OutGates / OutPorts
