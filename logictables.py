@@ -475,7 +475,7 @@ def circuit_load(file_name):
 
     The specified file name is assumed to be in the /circuits/ folder. See the
     included file '_template.txt' for an explanation of the file format, and
-    '_example.txt' for an example circuit file.
+    '_example01.txt' and '_example02.txt' for an example circuit file.
     """
 
     # Initialize dictionary associating gate names with gate objects
@@ -626,3 +626,8 @@ if __name__ == "__main__":
 
     # Generate and display truth table
     TestTable.generate_table()
+
+    # Load a circuit from a file and generate its truth table
+    print("\n")
+    _, LoadTable = circuit_load("_example01.txt")
+    LoadTable.generate_table()

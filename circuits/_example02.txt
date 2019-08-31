@@ -1,0 +1,18 @@
+# A more complicated example circuit, equivalent to the example circuit defined
+# explicitly in the main module's 'if __name__ == "__main__"' code.
+
+# Name / Type / OutGates[] / OutPorts[]
+Out	OUT
+And1	AND	Out	0
+And21	AND	And1	0
+And22	AND	And1	1
+Split	SPLIT	And21	And22	1	0
+Xor31	XOR	And21	0
+Xor32	XOR	Split	0
+And33	AND	And22	1
+Switch1	SWITCH	Xor31	Xor32	1	0
+Switch2	SWITCH	Xor32	And33	1	0
+In1	IN	Xor31	0
+In2	IN	Switch1	0
+In3	IN	Switch2	0
+In4	IN	And33	1
