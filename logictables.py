@@ -489,8 +489,9 @@ def circuit_load(file_name):
     # Open file and read line-by-line
     with open("circuits/"+file_name, 'r') as f:
         for line in f:
+
+            # Skip comment or blank lines
             if (line[0] == "#") or (len(line) <= 1):
-                # Skip comment or blank lines
                 continue
 
             # Get gate name and type
@@ -498,20 +499,94 @@ def circuit_load(file_name):
             gate_name = line_split[0]
             gate_type = line_split[1].upper()
 
-            # Break into cases depending on the specified gate type
-            if gate_type == "OUT":
-                gates[gate_name] = OutGate(name=gate_name)
-                outputs.append(gates[gate_name])
-            elif gate_type == "IN":
+            # Break into gate type category
+            if gate_type in {"OUT"}:
+                # Outputs
+                if gate_type == "OUT":
+                    gates[gate_name] = OutGate(name=gate_name)
+                    outputs.append(gates[gate_name])
+
+            elif gate_type in {"IN", "TRUE", "FALSE"}:
+                # Inputs
+
+                # All inputs specify one output
                 out = [gates[line_split[2]]]
                 port = [int(line_split[3])]
-                gates[gate_name] = InGate(out, out_ports=port, name=gate_name)
-                inputs.append(gates[gate_name])
-            elif gate_type == "AND":
+
+                # Create the specified type of input
+                if gate_type == "IN":
+                    gates[gate_name] = InGate(out, out_ports=port,
+                         name=gate_name)
+                    inputs.append(gates[gate_name])
+                elif gate_type == "TRUE":
+                    gates[gate_name] = TrueGate(out, out_ports=port,
+                         name=gate_name)
+                    constants.append(gates[gate_name])
+                elif gate_type == "FALSE":
+                    gates[gate_name] = FalseGate(out, out_ports=port,
+                         name=gate_name)
+                    constants.append(gates[gate_name])
+
+            elif gate_type in {"AND", "OR", "XOR", "NAND", "NOR", "XNOR"}:
+                # Binary
+
+                # All binary gates specify one output
                 out = [gates[line_split[2]]]
                 port = [int(line_split[3])]
-                gates[gate_name] = AndGate(out, out_ports=port, name=gate_name)
+
+                # Create the specified type of binary gate
+                if gate_type == "AND":
+                    gates[gate_name] = AndGate(out, out_ports=port,
+                         name=gate_name)
+                elif gate_type == "OR":
+                    gates[gate_name] = OrGate(out, out_ports=port,
+                         name=gate_name)
+                elif gate_type == "XOR":
+                    gates[gate_name] = XorGate(out, out_ports=port,
+                         name=gate_name)
+                elif gate_type == "NAND":
+                    gates[gate_name] = NandGate(out, out_ports=port,
+                         name=gate_name)
+                elif gate_type == "NOR":
+                    gates[gate_name] = NorGate(out, out_ports=port,
+                         name=gate_name)
+                elif gate_type == "XNOR":
+                    gates[gate_name] = XnorGate(out, out_ports=port,
+                         name=gate_name)
+
+            elif gate_type in {"NOT", "DIODE"}:
+                # Unary
+
+                # All unary gates specify one output
+                out = [gates[line_split[2]]]
+                port = [int(line_split[3])]
+
+                # Create the specified type of unary gate
+                if gate_type == "NOT":
+                    gates[gate_name] = NotGate(out, out_ports=port,
+                         name=gate_name)
+                elif gate_type == "DIODE":
+                    gates[gate_name] = DiodeGate(out, out_ports=port,
+                         name=gate_name)
+
+            elif gate_type in {"SPLIT", "SWITCH"}:
+                # Splitter
+
+                # All splitter gates specify two outputs
+                out = [gates[line_split[2]], gates[line_split[3]]]
+                port = [int(line_split[4]), int(line_split[5])]
+
+                # Create the specified type of splitter
+                if gate_type == "SPLIT":
+                    gates[gate_name] = SplitGate(out, out_ports=port,
+                         name=gate_name)
+                elif gate_type == "SWITCH":
+                    gates[gate_name] = SwitchGate(out, out_ports=port,
+                         name=gate_name)
+                    inputs.append(gates[gate_name])
+
             else:
+                # Unknown
                 print("Unknown gate type '"+gate_type+"' read.")
 
     # Create TruthTable object
