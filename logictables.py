@@ -121,7 +121,7 @@ class OutGate(_Gate):
     """OUTput which simply stores its input value."""
 
     #--------------------------------------------------------------------------
-    def __init__(self, name="<gate>"):
+    def __init__(self, name="<Out>"):
         """Constructor initializes several internal variables."""
 
         self.name = name
@@ -145,7 +145,7 @@ class InGate(_Gate):
     """INput which simply outputs its input value."""
 
     #--------------------------------------------------------------------------
-    def __init__(self, out_gates, out_ports=[0], name="<gate>"):
+    def __init__(self, out_gates, out_ports=[0], name="<In>"):
         """Constructor sets number of ports."""
 
         _Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
@@ -169,7 +169,7 @@ class TrueGate(_Gate):
     """Outputs a constant True signal."""
 
     #--------------------------------------------------------------------------
-    def __init__(self, out_gates, out_ports=[0], name="<gate>"):
+    def __init__(self, out_gates, out_ports=[0], name="<True>"):
         """Constructor sets number of ports and sets input/output to True."""
 
         _Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
@@ -188,7 +188,7 @@ class FalseGate(_Gate):
     """Outputs a constant False signal."""
 
     #--------------------------------------------------------------------------
-    def __init__(self, out_gates, out_ports=[0], name="<gate>"):
+    def __init__(self, out_gates, out_ports=[0], name="<False>"):
         """Constructor sets number of ports and sets input/output to True."""
 
         _Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
@@ -207,7 +207,7 @@ class AndGate(_Gate):
     """AND gate. Outputs True if both inputs are True."""
 
     #--------------------------------------------------------------------------
-    def __init__(self, out_gates, out_ports=[0], name="<gate>"):
+    def __init__(self, out_gates, out_ports=[0], name="<And>"):
         """Constructor sets number of ports."""
 
         _Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
@@ -224,7 +224,7 @@ class OrGate(_Gate):
     """OR gate. Outputs True if at least one input is True."""
 
     #--------------------------------------------------------------------------
-    def __init__(self, out_gates, out_ports=[0], name="<gate>"):
+    def __init__(self, out_gates, out_ports=[0], name="<Or>"):
         """Constructor sets number of ports."""
 
         _Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
@@ -241,7 +241,7 @@ class XorGate(_Gate):
     """XOR gate. Outputs True if exactly one input is True."""
 
     #--------------------------------------------------------------------------
-    def __init__(self, out_gates, out_ports=[0], name="<gate>"):
+    def __init__(self, out_gates, out_ports=[0], name="<Xor>"):
         """Constructor sets number of ports."""
 
         _Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
@@ -259,7 +259,7 @@ class NandGate(_Gate):
     """NAND gate. Outputs True if both inputs are False."""
 
     #--------------------------------------------------------------------------
-    def __init__(self, out_gates, out_ports=[0], name="<gate>"):
+    def __init__(self, out_gates, out_ports=[0], name="<Nand>"):
         """Constructor sets number of ports."""
 
         _Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
@@ -276,7 +276,7 @@ class NorGate(_Gate):
     """NOR gate. Outputs True if at least one input is False."""
 
     #--------------------------------------------------------------------------
-    def __init__(self, out_gates, out_ports=[0], name="<gate>"):
+    def __init__(self, out_gates, out_ports=[0], name="<Nor>"):
         """Constructor sets number of ports."""
 
         _Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
@@ -293,7 +293,7 @@ class XnorGate(_Gate):
     """XNOR gate. Outputs True if both inputs are the same."""
 
     #--------------------------------------------------------------------------
-    def __init__(self, out_gates, out_ports=[0], name="<gate>"):
+    def __init__(self, out_gates, out_ports=[0], name="<Xnor>"):
         """Constructor sets number of ports."""
 
         _Gate.__init__(self, 2, out_gates, out_ports=out_ports, name=name)
@@ -311,7 +311,7 @@ class NotGate(_Gate):
     """NOT Gate. Negates input signal."""
 
     #--------------------------------------------------------------------------
-    def __init__(self, out_gates, out_ports=[0], name="<gate>"):
+    def __init__(self, out_gates, out_ports=[0], name="<Not>"):
         """Constructor sets number of ports."""
 
         _Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
@@ -328,7 +328,7 @@ class DiodeGate(_Gate):
     """Diode. Simply carries signal unchanged, but only in one direction."""
 
     #--------------------------------------------------------------------------
-    def __init__(self, out_gates, out_ports=[0], name="<gate>"):
+    def __init__(self, out_gates, out_ports=[0], name="<Diode>"):
         """Constructor sets number of ports."""
 
         _Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
@@ -345,7 +345,7 @@ class SplitGate(_Gate):
     """Splits a signal into two outputs."""
 
     #--------------------------------------------------------------------------
-    def __init__(self, out_gates, out_ports=[0, 0], name="<gate>"):
+    def __init__(self, out_gates, out_ports=[0, 0], name="<Split>"):
         """Constructor sets number of ports."""
 
         _Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
@@ -363,7 +363,7 @@ class SwitchGate(_Gate):
     """Splitter that toggles between which output gate to trigger."""
 
     #--------------------------------------------------------------------------
-    def __init__(self, out_gates, out_ports=[0, 0], name="<gate>"):
+    def __init__(self, out_gates, out_ports=[0, 0], name="<Switch>"):
         """Constructor sets number of ports and initializes direction."""
 
         _Gate.__init__(self, 1, out_gates, out_ports=out_ports, name=name)
