@@ -682,6 +682,6 @@ if __name__ == "__main__":
 
     # Load a circuit from a file and generate its truth table
     print("\n")
-    _, LoadTable = circuit_load("err.txt")
+    _, LoadTable = circuit_load("_example01.txt")
     print("\n")
     LoadTable.generate_table()
