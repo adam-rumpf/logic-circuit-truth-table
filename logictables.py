@@ -621,7 +621,7 @@ def circuit_load(file_name):
                     # Unknown
                     print("Error: Unknown gate type '"+gate_type+"' read.")
                     print("Quitting.")
-                    return [], TruthTable()
+                    return {}, TruthTable()
 
             except KeyError as e:
                 # A key error occurs if the circuit file mentions an output
@@ -630,7 +630,7 @@ def circuit_load(file_name):
                       e.args[0]+"' which has not yet been defined.")
                 print("Gates must be defined in reverse topological order.")
                 print("Quitting.")
-                return [], TruthTable()
+                return {}, TruthTable()
 
             except IndexError:
                 # An index error occurs if too few parameters are listed for
@@ -638,7 +638,7 @@ def circuit_load(file_name):
                 print("Error: Incorrect number of arguments listed for gate '"+
                       gate_name+"'.")
                 print("Quitting.")
-                return [], TruthTable()
+                return {}, TruthTable()
 
     # Create TruthTable object
     table = TruthTable(inputs=inputs, constants=constants, outputs=outputs)
