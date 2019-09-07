@@ -2,6 +2,8 @@
 
 _Python_ module including a variety of logic gate classes, and a truth table class to automatically generate truth tables of logic circuits.
 
+Click [here](https://github.com/adam-rumpf/logic-circuit-truth-table/releases/tag/v0.4) for the latest (pre-)release.
+
 ## Overview
 
 This module includes a variety of classes to define logic gates and other related components. A logic circuit can be built by instantiating gate objects linked to each other. Most logic gates require one or more output gates, meaning that the circuit must generally be built beginning with the outputs and working backwards.
